@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Alert.API/Alert.API.csproj" />
+  <Project Path="Notification.Service/Notification.Service.csproj" />
+</Solution>

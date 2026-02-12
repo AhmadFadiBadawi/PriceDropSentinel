@@ -8,3 +8,5 @@ public class PriceAlert
     public string UserEmail { get; set; } = string.Empty;
     public bool IsTriggered { get; set; } = false;
 }
+
+//Defines the core business entity representing a price alert.

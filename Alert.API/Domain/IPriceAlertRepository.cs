@@ -6,3 +6,5 @@ public interface IPriceAlertRepository
     Task<IEnumerable<PriceAlert>> GetActiveAlertsAsync();
     Task UpdateAsync(PriceAlert alert);
 }
+
+//Declares the interface for storing and retrieving price alerts.

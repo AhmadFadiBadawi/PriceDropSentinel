@@ -26,3 +26,5 @@ public class PriceAlertRepository : IPriceAlertRepository
         await _context.SaveChangesAsync();
     }
 }
+
+//Provides the concrete EF Core implementation of the price alert repository.

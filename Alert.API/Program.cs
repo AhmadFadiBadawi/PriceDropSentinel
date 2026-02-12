@@ -11,6 +11,8 @@ builder.Services.AddDbContext<SentinelDbContext>(options =>
 builder.Services.AddScoped<IPriceAlertRepository, PriceAlertRepository>();
 builder.Services.AddScoped<AlertService>();
 
+builder.Services.AddScoped<RabbitMqPublisher>(); 
+
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 

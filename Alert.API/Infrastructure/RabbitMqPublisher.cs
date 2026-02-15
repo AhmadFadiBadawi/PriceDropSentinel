@@ -7,7 +7,7 @@ namespace Alert.API.Infrastructure;
 
 public class RabbitMqPublisher
 {
-    private readonly string _hostname = "localhost";
+    private readonly string _hostname = "sentinel-broker";
 
     public async Task PublishPriceDropAsync(PriceDroppedMessage message)
     {

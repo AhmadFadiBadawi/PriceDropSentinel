@@ -8,6 +8,12 @@ services:
       POSTGRES_DB: SentinelDB
     ports:
       - "5432:5432"
+    # Added Healthcheck to ensure Postgres is fully initialized
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d SentinelDB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   sentinel-broker:
     image: rabbitmq:3-management
@@ -15,6 +21,12 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    # Optional: Add healthcheck for RabbitMQ as well
+    healthcheck:
+      test: rabbitmq-diagnostics -q check_running
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   alert-api:
     build:
@@ -22,10 +34,15 @@ services:
       dockerfile: Alert.API/Dockerfile
     container_name: alert-api
     depends_on:
-      - sentinel-db
-      - sentinel-broker
+      sentinel-db:
+        condition: service_healthy # Wait for DB to be healthy
+      sentinel-broker:
+        condition: service_healthy # Wait for RabbitMQ to be healthy
     ports:
       - "5000:8080"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=sentinel-db;Database=SentinelDB;Username=admin;Password=password123
+      - ConnectionStrings__RabbitMQ=sentinel-broker
 
   notification-service:
     build:
@@ -33,4 +50,5 @@ services:
       dockerfile: Notification.Service/Dockerfile
     container_name: notification-service
     depends_on:
-      - sentinel-broker
+      sentinel-broker:
+        condition: service_healthy

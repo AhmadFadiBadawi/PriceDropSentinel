@@ -42,3 +42,11 @@ public class Worker : BackgroundService
         }
     }
 }
+
+//This is a background service that listens for messages.
+/*
+Listens to the same queue
+Receives the message
+Deserializes it
+Processes it (e.g., sends email)
+*/

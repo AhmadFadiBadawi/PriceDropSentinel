@@ -25,3 +25,12 @@ public class RabbitMqPublisher
             routingKey: "price_drop_alerts", body: body);
     }
 }
+
+//This class publishes messages to RabbitMQ.
+/*
+Connects to RabbitMQ (localhost)
+Opens a channel
+Ensures the price_drop_alerts queue exists
+Serializes the message to JSON
+Publishes it to the queue using the default exchange
+*/

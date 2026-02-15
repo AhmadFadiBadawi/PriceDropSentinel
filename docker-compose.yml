@@ -1,5 +1,5 @@
 services:
-  postgres:
+  sentinel-db:
     image: postgres:latest
     container_name: sentinel-db
     environment:
@@ -9,12 +9,28 @@ services:
     ports:
       - "5432:5432"
 
-  rabbitmq:
+  sentinel-broker:
     image: rabbitmq:3-management
     container_name: sentinel-broker
     ports:
       - "5672:5672"
       - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+
+  alert-api:
+    build:
+      context: .
+      dockerfile: Alert.API/Dockerfile
+    container_name: alert-api
+    depends_on:
+      - sentinel-db
+      - sentinel-broker
+    ports:
+      - "5000:8080"
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: Notification.Service/Dockerfile
+    container_name: notification-service
+    depends_on:
+      - sentinel-broker
